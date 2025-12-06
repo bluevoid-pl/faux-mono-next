@@ -26,7 +26,7 @@ async function resetDatabase() {
     END $$;
   `;
 
-	await db.execute(query);
+	// await db.execute(query);
 
 	const end = Date.now();
 	console.log(`✅ Database reset completed in ${end - start}ms`);

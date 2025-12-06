@@ -7,7 +7,7 @@ const userPrepareGetById = db.query.user
 	.findFirst({
 		where: eq(user.id, sql.placeholder("id")),
 	})
-	.prepare("userPrepareGetById");
+	.prepare();
 
 async function getById(id: string) {
 	const user = await userPrepareGetById.execute({ id });
@@ -49,7 +49,7 @@ const userPrepareGetByEmail = db.query.user
 	.findFirst({
 		where: eq(user.email, sql.placeholder("email")),
 	})
-	.prepare("userPrepareGetByEmail");
+	.prepare();
 
 async function getByEmail(email: string): Promise<User> {
 	const user = await userPrepareGetByEmail.execute({ email });
@@ -63,7 +63,7 @@ const userPrepareGetManyById = db
 	.select()
 	.from(user)
 	.where(inArray(user.id, sql.placeholder("ids")))
-	.prepare("userPrepareGetManyById");
+	.prepare();
 
 async function getManyByIds(ids: number[]): Promise<User[]> {
 	const users = await userPrepareGetManyById.execute({ ids });

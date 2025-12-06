@@ -22,7 +22,7 @@ if (
 export const auth = betterAuth({
 	plugins: [nextCookies()],
 	database: drizzleAdapter(db, {
-		provider: "pg", // or "pg" or "mysql"
+		provider: "sqlite", // or "pg" or "mysql"
 		schema,
 	}),
 	emailAndPassword: {

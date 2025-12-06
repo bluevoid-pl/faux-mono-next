@@ -9,7 +9,7 @@ export const env = createEnv({
 	},
 	server: {
 		DATABASE_URL: z.url(),
-		DATABASE_PREFIX: z.string(),
+		DATABASE_PREFIX: z.string().default(""),
 		VERCEL_URL: z.string().url().optional(),
 		AUTH_SECRET:
 			process.env.NODE_ENV === "production"

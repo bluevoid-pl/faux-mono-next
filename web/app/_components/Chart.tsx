@@ -1,6 +1,5 @@
 "use client";
 
-import { Card, CardContent } from "@bluevoid-test/ui/card";
 import { useMemo } from "react";
 import {
 	Area,
@@ -14,39 +13,40 @@ import {
 	XAxis,
 	YAxis,
 } from "recharts";
-import type { GrowthFactor } from "./GrowthDashboard";
+import type { DataLegend } from "../page";
 
-// Sample data for Polish companies
-const generateData = (start: string, end: string) => {
-	const startDate = new Date(start);
-	const endDate = new Date(end);
-	const data = [];
+// // Sample data for Polish companies
+// const generateData = (start: string, end: string) => {
+// 	const startDate = new Date(start);
+// 	const endDate = new Date(end);
+// 	const data = [];
 
-	const current = new Date(startDate);
-	while (current <= endDate) {
-		const year = current.getFullYear();
-		const quarter = Math.floor(current.getMonth() / 3) + 1;
-		const dateStr = `${year} Q${quarter}`;
+// 	const current = new Date(startDate);
+// 	while (current <= endDate) {
+// 		const year = current.getFullYear();
+// 		const quarter = Math.floor(current.getMonth() / 3) + 1;
+// 		const dateStr = `${year} Q${quarter}`;
 
-		data.push({
-			date: dateStr,
-			revenue: 100 + Math.random() * 50 + (year - 2020) * 15,
-			employees: 1000 + Math.random() * 200 + (year - 2020) * 150,
-			employees2: 1000 + Math.random() * 200 + (year - 2020) * 150,
-			employees3: 1000 + Math.random() * 200 + (year - 2020) * 150,
-			marketShare: 15 + Math.random() * 5 + (year - 2020) * 1.2,
-			profit: 20 + Math.random() * 15 + (year - 2020) * 5,
-			assets: 500 + Math.random() * 100 + (year - 2020) * 80,
-		});
+// 		data.push({
+// 			date: dateStr,
+// 			revenue: 100 + Math.random() * 50 + (year - 2020) * 15,
+// 			employees: 1000 + Math.random() * 200 + (year - 2020) * 150,
+// 			employees2: 1000 + Math.random() * 200 + (year - 2020) * 150,
+// 			employees3: 1000 + Math.random() * 200 + (year - 2020) * 150,
+// 			marketShare: 15 + Math.random() * 5 + (year - 2020) * 1.2,
+// 			profit: 20 + Math.random() * 15 + (year - 2020) * 5,
+// 			assets: 500 + Math.random() * 100 + (year - 2020) * 80,
+// 		});
 
-		current.setMonth(current.getMonth() + 3);
-	}
+// 		current.setMonth(current.getMonth() + 3);
+// 	}
 
-	return data;
-};
+// 	return data;
+// };
 
-interface GrowthChartProps {
-	factors: GrowthFactor[];
+interface ChartProps {
+	dataLegend: DataLegend[];
+	data: Record<string, any>[];
 	dateRange: { start: string; end: string };
 }
 
@@ -71,16 +71,13 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 	return null;
 };
 
-export function GrowthChart({ factors, dateRange }: GrowthChartProps) {
-	const data = useMemo(
-		() => generateData(dateRange.start, dateRange.end),
-		[dateRange],
-	);
+export function Chart({ dataLegend, data }: ChartProps) {
+	// const data = useMemo(
+	// 	() => generateData(dateRange.start, dateRange.end),
+	// 	[dateRange],
+	// );
 
 	return (
-		// <Card className="flex-1">
-		// 	<CardContent className="p-6">
-		//
 		<div className="flex flex-col items-center justify-center h-full">
 			<ResponsiveContainer width="100%" height={600}>
 				<AreaChart
@@ -131,11 +128,11 @@ export function GrowthChart({ factors, dateRange }: GrowthChartProps) {
 							</linearGradient>
 						))}
 					</defs>
-					<Legend wrapperStyle={{ paddingTop: "20px" }} />
-					{factors.map((factor, index) => (
+					{/*<Legend wrapperStyle={{ paddingTop: "20px" }} />*/}
+					{dataLegend.map((item, index) => (
 						<Area
-							key={factor.id}
-							dataKey={factor.id}
+							key={item.id}
+							dataKey={item.id}
 							type="natural"
 							fill={`url(#chart-grad-${(index % 10) + 1})`}
 							fillOpacity={0.4}
@@ -157,7 +154,5 @@ export function GrowthChart({ factors, dateRange }: GrowthChartProps) {
 				</AreaChart>
 			</ResponsiveContainer>
 		</div>
-		// 	</CardContent>
-		// </Card>
 	);
 }

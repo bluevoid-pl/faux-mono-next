@@ -4,7 +4,7 @@ import { env } from "@/env";
 
 export default {
 	schema: "./db/schema.ts",
-	dialect: "postgresql",
+	dialect: "sqlite",
 	dbCredentials: {
 		url: env.DATABASE_URL,
 	},
