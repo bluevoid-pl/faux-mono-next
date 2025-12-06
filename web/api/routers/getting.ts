@@ -1,9 +1,9 @@
 import _ from "lodash";
 import { z } from "zod";
 import { retry } from "@/api/middlewares/retry";
-import { pub } from "@/api/orpc";
+import { priv } from "@/api/orpc";
 
-export const echoHandler = pub
+export const echoHandler = priv
 	.use(retry({ times: 3 }))
 	.route({
 		method: "GET",

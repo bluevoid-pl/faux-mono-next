@@ -1,5 +1,5 @@
 import type { NextConfig } from "next";
-import "./src/env";
+import "./env";
 // @ts-check
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful

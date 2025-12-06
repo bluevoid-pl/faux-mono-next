@@ -1,5 +1,6 @@
 import z from "zod";
 import { retry } from "@/api/middlewares/retry";
+import { priv } from "../orpc";
 
 export const getUserById = priv
 	.use(retry({ times: 3 }))
