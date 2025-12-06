@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@source '../node_modules/@bluevoid-test/ui/**/*.{js,ts,jsx,tsx,mjs,cjs}';
+
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

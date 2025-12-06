@@ -1,9 +1,11 @@
 import "./styles.css";
 import "../lib/orpc.server";
 
+import { cn } from "@bluevoid-test/ui/utils";
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { ReactQueryProvider } from "@/lib/query-client";
+import Header from "./_components/Header";
 
 export const metadata: Metadata = {
 	title: "Create T3 App",
@@ -22,7 +24,15 @@ export default function RootLayout({
 	return (
 		<html className={`${geist.variable}`} lang="en">
 			<body>
-				<ReactQueryProvider>{children}</ReactQueryProvider>
+				<Header />
+				<main
+					className={cn(
+						"min-h-screen pt-14 transition-all",
+						// !isMobile && "pl-[5.5rem]",
+					)}
+				>
+					<ReactQueryProvider>{children}</ReactQueryProvider>
+				</main>
 			</body>
 		</html>
 	);
