@@ -1,7 +1,7 @@
-import { user } from "./schema";
 import { eq, inArray, sql } from "drizzle-orm";
+import { db } from "@/db";
+import { user } from "./schema";
 import type { UpdatedUser, User } from "./validator";
-import { db } from "@/server/db";
 
 const userPrepareGetById = db.query.user
 	.findFirst({
@@ -54,7 +54,7 @@ const userPrepareGetByEmail = db.query.user
 async function getByEmail(email: string): Promise<User> {
 	const user = await userPrepareGetByEmail.execute({ email });
 	if (!user)
-	throw new Error(`[UserService]: Could not find user with email ${email}`)
+		throw new Error(`[UserService]: Could not find user with email ${email}`);
 	return user;
 }
 
@@ -68,7 +68,7 @@ const userPrepareGetManyById = db
 async function getManyByIds(ids: number[]): Promise<User[]> {
 	const users = await userPrepareGetManyById.execute({ ids });
 	if (users.length !== ids.length)
-	throw Error(`[UserService]: Could not find users with ids ${ids}`)
+		throw Error(`[UserService]: Could not find users with ids ${ids}`);
 	return users;
 }
 

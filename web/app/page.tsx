@@ -1,8 +1,8 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { auth } from "@/server/auth";
-import { getSession } from "@/server/auth/server";
+import { auth } from "@/lib/auth";
+import { getSession } from "@/lib/auth/server";
 
 export default async function Home() {
 	const session = await getSession();

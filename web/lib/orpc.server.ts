@@ -2,7 +2,7 @@ import "server-only";
 
 import { createRouterClient } from "@orpc/server";
 import { headers } from "next/headers";
-import { router } from "@/server/api/root";
+import { router } from "@/api/root";
 
 /**
  * This is part of the Optimize SSR setup.

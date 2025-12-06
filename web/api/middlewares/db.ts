@@ -1,5 +1,5 @@
 import { os } from "@orpc/server";
-import { db as database } from "@/server/db";
+import { db as database } from "@/db";
 
 export const dbProviderMiddleware = os
 	.$context<{ db?: typeof database }>()

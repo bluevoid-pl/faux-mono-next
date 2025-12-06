@@ -1,1 +1,1 @@
-export * from "@/server/api/user/schema"
+export * from "@/api/user/schema";
