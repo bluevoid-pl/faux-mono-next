@@ -23,6 +23,8 @@ export type GrowthFactor = {
 const initialGrowthFactors: GrowthFactor[] = [
 	{ id: "revenue", label: "Revenue", color: "#3b82f6", enabled: true },
 	{ id: "employees", label: "Employees", color: "#8b5cf6", enabled: true },
+	{ id: "employees2", label: "Employees2", color: "#8b5cf6", enabled: true },
+	{ id: "employees3", label: "Employees3", color: "#8b5cf6", enabled: true },
 	{
 		id: "marketShare",
 		label: "Market Share",

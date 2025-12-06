@@ -32,6 +32,8 @@ const generateData = (start: string, end: string) => {
 			date: dateStr,
 			revenue: 100 + Math.random() * 50 + (year - 2020) * 15,
 			employees: 1000 + Math.random() * 200 + (year - 2020) * 150,
+			employees2: 1000 + Math.random() * 200 + (year - 2020) * 150,
+			employees3: 1000 + Math.random() * 200 + (year - 2020) * 150,
 			marketShare: 15 + Math.random() * 5 + (year - 2020) * 1.2,
 			profit: 20 + Math.random() * 15 + (year - 2020) * 5,
 			assets: 500 + Math.random() * 100 + (year - 2020) * 80,
@@ -107,24 +109,37 @@ export function GrowthChart({ factors, dateRange }: GrowthChartProps) {
 
 					<Tooltip content={<CustomTooltip />} />
 					<defs>
-						<linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
-							<stop offset="5%" stopColor="#f00" stopOpacity={0.6} />
-							<stop offset="65%" stopColor="#f00" stopOpacity={0.01} />
-						</linearGradient>
-						<linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
-							<stop offset="5%" stopColor="#0f0" stopOpacity={0.6} />
-							<stop offset="65%" stopColor="#0f0" stopOpacity={0.01} />
-						</linearGradient>
+						{Array.from({ length: 10 }).map((_, index) => (
+							<linearGradient
+								key={index}
+								id={`chart-grad-${index + 1}`}
+								x1="0"
+								y1="0"
+								x2="0"
+								y2="1"
+							>
+								<stop
+									offset="5%"
+									stopColor={`var(--chart-${index + 1})`}
+									stopOpacity={0.6}
+								/>
+								<stop
+									offset="65%"
+									stopColor={`var(--chart-${index + 1})`}
+									stopOpacity={0.01}
+								/>
+							</linearGradient>
+						))}
 					</defs>
 					<Legend wrapperStyle={{ paddingTop: "20px" }} />
-					{factors.map((factor) => (
+					{factors.map((factor, index) => (
 						<Area
 							key={factor.id}
 							dataKey={factor.id}
 							type="natural"
-							fill="url(#fillDesktop)"
+							fill={`url(#chart-grad-${(index % 10) + 1})`}
 							fillOpacity={0.4}
-							stroke="#f00"
+							stroke={`var(--chart-${(index % 10) + 1})`}
 							dot={true}
 							stackId="a"
 						/>
