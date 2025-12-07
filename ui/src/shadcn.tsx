@@ -322,7 +322,7 @@ const UIElements: {
 function ShadCN() {
 	// const { toggleTheme, theme } = useUserContext();
 	const uuid = useId();
-	console.log("test");
+	// console.log("test");
 	return (
 		<div className="mx-auto flex max-w-(--breakpoint-xl) flex-col gap-4 p-2 pb-96">
 			{/* <TooltipProvider> */}
@@ -337,7 +337,10 @@ function ShadCN() {
 					</CardHeader>
 					<CardContent className={cn("flex gap-2 p-2", val.className)}>
 						{!val?.disabled ? (
-							<ErrorBoundary onError={console.log} fallback={<div>Something went wrong</div>}>
+							<ErrorBoundary
+								onError={console.log}
+								fallback={<div>Something went wrong</div>}
+							>
 								<Suspense
 									fallback={
 										"Loading..."

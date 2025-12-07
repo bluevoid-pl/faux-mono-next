@@ -54,7 +54,7 @@ export function WskaznikiPage() {
 	const selectionFilter = selection
 		.filter((v) => v.enabled)
 		.map((v) => v.label);
-	console.log(selectionFilter);
+	// console.log(selectionFilter);
 	const { newData, legendX, legendY } = useCacheDataTransform(
 		selectionFilter,
 		column,

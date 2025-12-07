@@ -31,7 +31,7 @@ const processFile = async (fileName: string) => {
 		types.push(records[y][2]);
 	}
 	types = [...new Set(types)];
-	console.log(types);
+	// console.log(types);
 	for (const type of types) {
 		for (let x = 3; x < width; x++) {
 			const obj: Record<string, any> = {
