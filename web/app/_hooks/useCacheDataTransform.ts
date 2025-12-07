@@ -37,7 +37,9 @@ export function useCacheDataTransform(
     return [
       newData,
       legendX.map((val) => ({ id: val, label: val, enabled: true })),
-      legendY.sort().map((val) => ({ id: val, label: val, enabled: true })),
+      legendY
+        .sort((v1, v2) => Number.parseFloat(v1) - Number.parseFloat(v2))
+        .map((val) => ({ id: val, label: val, enabled: true })),
     ];
   }, [query?.data, valueColumn]);
 

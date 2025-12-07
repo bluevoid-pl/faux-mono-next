@@ -77,7 +77,7 @@ export function Chart({ dataLegend, data }: ChartProps) {
   // );
 
   return (
-    <div className="flex h-full flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center pt-8">
       <ResponsiveContainer height={600} width="100%">
         <AreaChart
           accessibilityLayer
@@ -130,7 +130,7 @@ export function Chart({ dataLegend, data }: ChartProps) {
           {/*<Legend wrapperStyle={{ paddingTop: "20px" }} />*/}
           {dataLegend.map((item, index) => (
             <Area
-              dataKey={item.id}
+              dataKey={item.label}
               dot={true}
               fill={`url(#chart-grad-${(index % 10) + 1})`}
               fillOpacity={0.4}
