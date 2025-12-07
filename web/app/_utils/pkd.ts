@@ -1,4 +1,4 @@
-export const sections = [
+export const sections: string[] = [
   "SEK_A",
   "SEK_B",
   "SEK_C",
@@ -22,7 +22,7 @@ export const sections = [
   "SEK_U",
 ];
 
-export const sections2 = [
+export const sections2: string[] = [
   "1",
   "10",
   "11",

@@ -1,16 +1,18 @@
+import { inArray } from "drizzle-orm";
 import { db } from "@/db";
+import { cache_wskaznikow } from "./schema";
 
-async function getAllWithMeta(pkd: string[]) {
+async function getAllWithPKD(pkd: string[]) {
   const data = await db.query.cache_wskaznikow.findMany({
-    where: {
-      pkd_section: { in: pkd },
-    },
+    where: inArray(cache_wskaznikow.pkd_section, pkd),
   });
   if (!data)
-    throw new Error(`[CacheService]: Could not find cache with id ${data.id}`);
+    throw new Error(
+      `[CacheService]: Could not find cache with id ${pkd.reduce((prev, next) => prev + ", " + next, "")}`,
+    );
   return data;
 }
 
 export const cacheService = {
-  getAllWithMeta,
+  getAllWithPKD,
 };

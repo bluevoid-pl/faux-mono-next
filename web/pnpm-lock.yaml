@@ -41,6 +41,9 @@ importers:
       csv:
         specifier: ^6.4.1
         version: 6.4.1
+      csv-parse:
+        specifier: ^6.1.0
+        version: 6.1.0
       drizzle-orm:
         specifier: 0.45.0
         version: 0.45.0(@libsql/client@0.15.15)(kysely@0.28.8)(postgres@3.4.7)
