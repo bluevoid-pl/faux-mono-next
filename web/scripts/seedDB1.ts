@@ -5,7 +5,7 @@ import { db } from "../db";
 
 // CSV parsing and seeding function
 async function seedCacheWskaznikow(
-  csvFilePath: string = "/home/tyfon/Programming/HackNation-project/ProjectCore/Data/Book4.csv",
+  csvFilePath: string = "/home/tyfon/Programming/HackNation-project/ProjectCore/Data/index_branż.csv",
 ) {
   try {
     console.log("Reading CSV file...");
@@ -16,6 +16,7 @@ async function seedCacheWskaznikow(
       columns: true,
       skip_empty_lines: true,
       trim: true,
+      delimiter: ";",
       cast: (value, context) => {
         // Handle special cases for numeric fields
         if (value === "" || value === null || value === undefined) return null;
@@ -62,6 +63,7 @@ async function seedCacheWskaznikow(
     // Generate unique ID as pkd_section + pkd_2025 + year
     const preparedRecords: any = records.map((val: any) => ({
       ...val,
+      year: val.year,
       date: val.year,
       pkd: val.pkd_section,
       id: crypto.randomUUID(),
@@ -72,14 +74,13 @@ async function seedCacheWskaznikow(
     await db.delete(cache_wskaznikow);
 
     console.log("Inserting data...");
-    const result = await db
-      .insert(cache_wskaznikow)
-      .values(preparedRecords)
-      .execute();
+    for (const record of preparedRecords) {
+      await db.insert(cache_wskaznikow).values(record).execute();
+    }
 
-    console.log(
-      `✅ Seeded ${result.rows.length} records into cache_wskaznikow table [file:1]`,
-    );
+    // console.log(
+    //   `✅ Seeded ${result.rows.length} records into cache_wskaznikow table [file:1]`,
+    // );
   } catch (error) {
     console.error("❌ Seeding failed:", error);
     throw error;
