@@ -8,7 +8,7 @@ export const env = createEnv({
 			.default("development"),
 	},
 	server: {
-		DATABASE_URL: z.url(),
+		DATABASE_URL: z.string(),
 		DATABASE_PREFIX: z.string().default(""),
 		VERCEL_URL: z.string().url().optional(),
 		AUTH_SECRET:
