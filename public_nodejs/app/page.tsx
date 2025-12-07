@@ -1,169 +1,168 @@
 "use client";
 
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
 } from "@bluevoid-test/ui/card";
 import { Checkbox } from "@bluevoid-test/ui/checkbox";
 import { Label } from "@bluevoid-test/ui/label";
+import { ScrollArea } from "@bluevoid-test/ui/scroll-area";
 import { useQuery } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useSelectedLayoutSegment } from "next/navigation";
+import { Fragment, useEffect, useId, useMemo, useState } from "react";
 import { orpc } from "@/lib/orpc";
 import { Chart } from "./_components/Chart";
+import ColumnSelector from "./_components/ColumnSelector";
+import GroupFilterSelector from "./_components/GroupFilterSelector";
+import LevelSelector from "./_components/LevelSelector";
+import {
+	type Level,
+	useCacheDataTransform,
+} from "./_hooks/useCacheDataTransform";
+import { group_desc, groups } from "./_utils/group";
+import { sections2 } from "./_utils/pkd";
+
+const pkd_ids_groups = Object.keys(groups)
+	.reduce((arr: string[], next: string) => {
+		return [...arr, ...groups[next as keyof typeof groups]];
+	}, [])
+	.map((v) => ({ id: v, label: v, enabled: false }));
+
+const first_in_group = Object.keys(groups).map(
+	(key) => groups?.[key as keyof typeof groups]?.[0],
+);
 
 export type DataLegend = {
-  id: string;
-  label: string;
-  enabled: boolean;
+	id: string;
+	label: string;
+	enabled: boolean;
 };
 
-const legendX: DataLegend[] = [
-  // { id: "numer PKD", label: "numer PKD",  enabled: true },
-  // { id: "nazwa PKD", label: "nazwa PKD",  enabled: true },
-  // { id: "wskaźnik", label: "wskaźnik",  enabled: true },
-  { id: "2005", label: "2005", enabled: true },
-  { id: "2006", label: "2006", enabled: true },
-  { id: "2007", label: "2007", enabled: true },
-  { id: "2008", label: "2008", enabled: true },
-  { id: "2009", label: "2009", enabled: true },
-  { id: "2010", label: "2010", enabled: true },
-  { id: "2011", label: "2011", enabled: true },
-  { id: "2012", label: "2012", enabled: true },
-  { id: "2013", label: "2013", enabled: true },
-  { id: "2014", label: "2014", enabled: true },
-  { id: "2015", label: "2015", enabled: true },
-  { id: "2016", label: "2016", enabled: true },
-  { id: "2017", label: "2017", enabled: true },
-  { id: "2018", label: "2018", enabled: true },
-  { id: "2019", label: "2019", enabled: true },
-  { id: "2020", label: "2020", enabled: true },
-  { id: "2021", label: "2021", enabled: true },
-  { id: "2022", label: "2022", enabled: true },
-  { id: "2023", label: "2023", enabled: true },
-  { id: "2024", label: "2024", enabled: true },
-];
+// TODO: preload some data
+// TODO: precache all groupselections
+// TODO: unshit this code
 
-const legendY: DataLegend[] = [
-  { id: "OG", label: "OG", enabled: true },
-  // { id: "OG", label: "OG" ,enabled:true},
-  { id: "SEK_A", label: "SEK_A", enabled: true },
-  // { id: "SEK_A", label: "SEK_A" ,enabled:true},
-  { id: "SEK_B", label: "SEK_B", enabled: true },
-  // { id: "SEK_B", label: "SEK_B" ,enabled:true},
-  { id: "SEK_C", label: "SEK_C", enabled: true },
-  // { id: "SEK_C", label: "SEK_C" ,enabled:true},
-  { id: "SEK_D", label: "SEK_D", enabled: true },
-  // { id: "SEK_D", label: "SEK_D" ,enabled:true},
-  { id: "SEK_E", label: "SEK_E", enabled: true },
-  // { id: "SEK_E", label: "SEK_E" ,enabled:true},
-  { id: "SEK_F", label: "SEK_F", enabled: true },
-  // { id: "SEK_F", label: "SEK_F" ,enabled:true},
-  { id: "SEK_G", label: "SEK_G", enabled: true },
-  // { id: "SEK_G", label: "SEK_G" ,enabled:true},
-  { id: "SEK_H", label: "SEK_H", enabled: true },
-  // { id: "SEK_H", label: "SEK_H" ,enabled:true},
-  { id: "SEK_I", label: "SEK_I", enabled: true },
-  // { id: "SEK_I", label: "SEK_I" ,enabled:true},
-  { id: "SEK_J", label: "SEK_J", enabled: true },
-  // { id: "SEK_J", label: "SEK_J" ,enabled:true},
-  { id: "SEK_K", label: "SEK_K", enabled: true },
-  // { id: "SEK_K", label: "SEK_K" ,enabled:true},
-  { id: "SEK_L", label: "SEK_L", enabled: true },
-  // { id: "SEK_L", label: "SEK_L" ,enabled:true},
-  { id: "SEK_M", label: "SEK_M", enabled: true },
-  // { id: "SEK_M", label: "SEK_M" ,enabled:true},
-  { id: "SEK_N", label: "SEK_N", enabled: true },
-  // { id: "SEK_N", label: "SEK_N" ,enabled:true},
-  { id: "SEK_O", label: "SEK_O", enabled: true },
-  // { id: "SEK_O", label: "SEK_O" ,enabled:true},
-  { id: "SEK_P", label: "SEK_P", enabled: true },
-  // { id: "SEK_P", label: "SEK_P" ,enabled:true},
-  { id: "SEK_Q", label: "SEK_Q", enabled: true },
-  // { id: "SEK_Q", label: "SEK_Q" ,enabled:true},
-  { id: "SEK_R", label: "SEK_R", enabled: true },
-  // { id: "SEK_R", label: "SEK_R" ,enabled:true},
-  { id: "SEK_S", label: "SEK_S", enabled: true },
-  // { id: "SEK_S", label: "SEK_S" ,enabled:true},
-  { id: "SEK_T", label: "SEK_T", enabled: true },
-  // { id: "SEK_T", label: "SEK_T" ,enabled:true},
-  { id: "SEK_U", label: "SEK_U", enabled: true },
-  // { id: "SEK_U", label: "SEK_U" ,enabled:true},
-];
+export function WskaznikiPage() {
+	const uuid = useId();
+	const [level, setLevel] = useState<Level>("group");
+	const [selection, setSelection] = useState<DataLegend[]>(pkd_ids_groups);
+	const [groupFilter, setGroupFilter] = useState<string>("A");
+	const [column, setColumn] = useState("main_index");
+	const selectionFilter = selection
+		.filter((v) => v.enabled)
+		.map((v) => v.label);
+	console.log(selectionFilter);
+	const { newData, legendX, legendY } = useCacheDataTransform(
+		selectionFilter,
+		column,
+	);
+	// biome-ignore lint/correctness/useExhaustiveDependencies: HACK
+	useEffect(() => {
+		if (level === "group") {
+			onGroupFilterChange("A");
+		}
+	}, []);
+	if (!newData) return null;
 
-export function GrowthDashboard() {
-  const [level, setLevel] = useState<"sektor" | "group">("group");
+	const toggleItem = (label: string) => {
+		setSelection((items) =>
+			items.map((f) => (f.label === label ? { ...f, enabled: !f.enabled } : f)),
+		);
+	};
 
-  const [legend, setLegend] = useState<DataLegend[]>(legendY);
-  const { data: dataObj } = useQuery(orpc.testLoader.queryOptions());
+	const onGroupFilterChange = (groupFilter: string) => {
+		setGroupFilter(groupFilter);
+		setSelection((prev) =>
+			prev.map((item) => ({
+				...item,
+				enabled: groups[groupFilter as keyof typeof groups].includes(
+					item.label,
+				),
+			})),
+		);
+	};
 
-  const enabledLabels = useMemo(
-    () => legend.filter((f) => f.enabled),
-    [legend],
-  );
-  let data: any = null;
-  if (dataObj) data = dataObj.data;
-  const newData = useMemo(
-    () =>
-      data?.filter(
-        (val: any) => val.type !== "EN Liczba jednostek gospodarczych",
-      ),
-    [data],
-  );
-  if (!dataObj) {
-    return null;
-  }
+	return (
+		<div className="flex h-[calc(100vh-3.5rem)] flex-col gap-4 bg-blue-100 p-6 lg:flex-row">
+			<div className="flex flex-1 flex-col gap-4">
+				<Card>
+					<CardContent className="grid grid-cols-3 gap-3">
+						<LevelSelector onValueChange={setLevel} value={level} />
+						<GroupFilterSelector
+							disabled={level !== "group"}
+							onValueChange={onGroupFilterChange}
+							value={groupFilter}
+						/>
+						<ColumnSelector onValueChange={setColumn} value={column} />
+					</CardContent>
+				</Card>
+				<Card className="grow">
+					<CardContent>
+						<Chart
+							data={newData}
+							dataLegend={selection}
+							key={`${level}${groupFilter}${column}`}
+						/>
+					</CardContent>
+				</Card>
+			</div>
 
-  const toggleItem = (id: string) => {
-    setLegend((items) =>
-      items.map((f) => (f.id === id ? { ...f, enabled: !f.enabled } : f)),
-    );
-  };
-
-  return (
-    <div className="flex min-h-[calc(100vh-3.5rem)] flex-col bg-background lg:flex-row">
-      <div className="flex-1 p-4 lg:p-6">
-        <Chart data={newData} dataLegend={enabledLabels} />
-      </div>
-
-      <div className="w-full border-border border-l bg-blue-100 lg:w-80 xl:w-96">
-        <div className="space-y-6 p-4 lg:p-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Filtry PKD</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {legend.map((item, index) => (
-                  <div className="flex items-center space-x-3" key={item.id}>
-                    <Checkbox
-                      checked={item.enabled}
-                      id={item.id}
-                      onCheckedChange={() => toggleItem(item.id)}
-                    />
-                    <Label
-                      className="flex cursor-pointer items-center gap-2 font-normal"
-                      htmlFor={item.id}
-                    >
-                      <div
-                        className="h-3 w-3 rounded-full"
-                        style={{
-                          backgroundColor: `var(--chart-${(index % 10) + 1})`,
-                        }}
-                      />
-                      {item.label}
-                    </Label>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    </div>
-  );
+			<div className="w-full border-border border-l lg:w-80 xl:w-96">
+				<Card>
+					<CardHeader>
+						<CardTitle className="text-base">Filtry PKD</CardTitle>
+					</CardHeader>
+					<CardContent>
+						<ScrollArea className="h-[calc(100vh-3.5rem-9.5rem)]">
+							<div className="space-y-4">
+								{selection?.map((item, index) => (
+									<Fragment key={`frag${item.id}`}>
+										{first_in_group.includes(item.label) ? (
+											<div className="space-y-4" key={`LETTER${item.id}`}>
+												Sektor{" "}
+												{
+													Object.keys(groups)[
+														first_in_group.indexOf(item.label)
+													]
+												}
+											</div>
+										) : null}
+										<div className="flex items-center space-x-3" key={item.id}>
+											<Checkbox
+												checked={item.enabled}
+												id={`${uuid}${item.id}`}
+												onCheckedChange={() => toggleItem(item.label)}
+											/>
+											<Label
+												className="flex cursor-pointer items-center gap-2 font-normal"
+												htmlFor={`${uuid}${item.id}`}
+											>
+												<div
+													className="h-3 w-3 shrink-0 rounded-full"
+													style={{
+														backgroundColor: `var(--chart-${(index % 10) + 1})`,
+													}}
+												/>
+												{item.label}{" "}
+												<span className="text-sm lowercase first-letter:capitalize">
+													{group_desc?.[
+														item.label as keyof typeof group_desc
+													] ?? ""}
+												</span>
+											</Label>
+										</div>
+									</Fragment>
+								))}
+							</div>
+						</ScrollArea>
+					</CardContent>
+				</Card>
+			</div>
+		</div>
+	);
 }
 
-export default GrowthDashboard;
+export default WskaznikiPage;
