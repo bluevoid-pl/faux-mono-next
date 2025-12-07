@@ -1,11 +1,9 @@
 import { createTable } from "@/db/tableCreator";
 
 export const cache_wskaznikow = createTable("cache-wskaznikow", (d) => ({
-  id: d.text(),
+  id: d.text().primaryKey(),
   date: d.text().notNull(), // not used
   pkd: d.text(),
-  pkd_section: d.text(),
-  pkd_2025: d.text(),
   pkd_name: d.text(),
   year: d.text(),
   revenue: d.real(),
@@ -58,4 +56,5 @@ export const cache_wskaznikow = createTable("cache-wskaznikow", (d) => ({
   future_risk_index_parameter: d.real(),
   current_index_parameter: d.real(),
   future_index_parameter: d.real(),
+  prediction: d.integer({ mode: "boolean" }),
 }));

@@ -84,7 +84,7 @@ export function Chart({ dataLegend, data }: ChartProps) {
           data={data}
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
         >
-          <CartesianGrid className="stroke-muted" strokeDasharray="3 3" />
+          <CartesianGrid className="stroke-stone-300" strokeDasharray="3 3" />
           <XAxis
             className="text-xs"
             dataKey="date"
@@ -92,6 +92,8 @@ export function Chart({ dataLegend, data }: ChartProps) {
           />
           <YAxis
             className="text-xs"
+            // domain={[-5, "auto"]}
+            padding={{ bottom: 60 }}
             tick={{ fill: "hsl(var(--muted-foreground))" }}
           />
           {/*<Area

@@ -15,24 +15,23 @@ const groupNames = Object.keys(groups).map((value) => ({
 interface GroupFilterSelectorProps {
   onValueChange: (value: string) => void;
   value: string;
+  disabled?: boolean;
 }
 function GroupFilterSelector(props: GroupFilterSelectorProps) {
-  const { onValueChange, value } = props;
+  const { onValueChange, value, disabled = false } = props;
   return (
-    <div>
-      <Select onValueChange={onValueChange} value={value}>
-        <SelectTrigger>
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          {groupNames.map((item) => (
-            <SelectItem key={item.id} value={item.value}>
-              Sektor {item.value}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
+    <Select disabled={disabled} onValueChange={onValueChange} value={value}>
+      <SelectTrigger className="w-full">
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        {groupNames.map((item) => (
+          <SelectItem key={item.id} value={item.value}>
+            Grupy sektora {item.value}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
 }
 

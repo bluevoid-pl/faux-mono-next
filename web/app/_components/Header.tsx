@@ -9,7 +9,7 @@ async function Header() {
 
   return (
     <div className="fixed top-0 left-0 z-40 h-14 w-full">
-      <div className="flex h-full w-full items-center justify-between gap-6 border-stone-800 border-b border-solid bg-stone-900 px-6 text-stone-50">
+      <div className="flex h-full w-full items-center justify-between gap-6 border-b border-solid px-6 shadow">
         <div className="flex items-center gap-4">
           <img alt="" className="h-12" src="logo.png" />
           <span className="font-extrabold font-mono text-2xl">Admin123</span>

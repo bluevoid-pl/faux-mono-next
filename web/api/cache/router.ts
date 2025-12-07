@@ -13,6 +13,7 @@ export const cache_wskaznikow = pub
   })
   .input(z.object({ pkds: z.string().array() }))
   .handler(async ({ context, input }) => {
+    console.log(input.pkds);
     const data = await cacheService.getAllWithPKD(input.pkds);
     return data;
   });

@@ -14,25 +14,27 @@ export function useCacheDataTransform(
   );
 
   const [newData, legendX, legendY] = useMemo(() => {
-    const groupByYear = Object.groupBy(
-      query?.data ?? [],
-      (val) => val.year ?? "",
-    );
+    const groupByYear = Object.groupBy(query?.data ?? [], (val) => val.date);
 
     const newData: Record<number | string, any>[] = [];
     const legendX = [];
     let legendY = [];
     for (const group in groupByYear) {
+      if (group.startsWith("S")) {
+        continue;
+      }
       legendX.push(group);
       const dataPoint: Record<any, any> = { year: group, date: group };
       for (const row of groupByYear[group as keyof typeof groupByYear] ?? []) {
-        legendY.push(row.pkd_section ?? "");
+        legendY.push(row.pkd ?? "");
 
-        dataPoint[row.pkd_section ?? ""] = row[valueColumn as keyof typeof row];
+        dataPoint[row.pkd ?? ""] = row[valueColumn as keyof typeof row];
       }
       newData.push(dataPoint);
     }
     legendY = [...new Set(legendY)];
+
+    console.log(newData);
 
     return [
       newData,

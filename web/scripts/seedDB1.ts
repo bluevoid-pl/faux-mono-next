@@ -65,13 +65,17 @@ async function seedCacheWskaznikow(
       ...val,
       year: val.year,
       date: val.year,
-      pkd: val.pkd_section,
+      pkd:
+        (val?.pkd_2025?.startsWith?.("0")
+          ? val.pkd_2025.substr(1)
+          : val.pkd_2025) ||
+        (val?.PKD?.startsWith?.("0") ? val.PKD.substr(1) : val.PKD),
       id: crypto.randomUUID(),
     }));
 
     console.log(preparedRecords[0]);
     console.log("Clearing existing data...");
-    await db.delete(cache_wskaznikow);
+    // await db.delete(cache_wskaznikow);
 
     console.log("Inserting data...");
     for (const record of preparedRecords) {
@@ -92,7 +96,16 @@ async function seedCacheWskaznikow(
 // Run the seeder
 if (require.main === module) {
   seedCacheWskaznikow()
-    .then(() => process.exit(0))
+    // seedCacheWskaznikow("/home/tyfon/Downloads/index_branż.csv")
+    .then(() => {
+      seedCacheWskaznikow("/home/tyfon/Downloads/index_branż.csv")
+        .then(() => process.exit(0))
+        .catch((error) => {
+          console.error(error);
+          process.exit(1);
+        });
+      process.exit(0);
+    })
     .catch((error) => {
       console.error(error);
       process.exit(1);
