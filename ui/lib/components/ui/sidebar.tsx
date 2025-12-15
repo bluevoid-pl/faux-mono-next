@@ -3,9 +3,9 @@
 import { Slot } from "@radix-ui/react-slot";
 import { IconLayoutSidebar } from "@tabler/icons-react";
 import { cva, type VariantProps } from "class-variance-authority";
-import { useIsMobile } from "lib/hooks/use-mobile";
-import { cn } from "lib/utils";
 import * as React from "react";
+import { useIsMobile } from "../../hooks";
+import { cn } from "../../utils";
 import { Button } from "./button";
 import { Input } from "./input";
 import { Separator } from "./separator";

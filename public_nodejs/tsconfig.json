@@ -1,25 +1,13 @@
 {
+	"files": [],
+	"references": [
+		{ "path": "./tsconfig.app.json" },
+		{ "path": "./tsconfig.node.json" }
+	],
 	"compilerOptions": {
-		"target": "ES2017",
-		"lib": ["dom", "dom.iterable", "esnext"],
-		"allowJs": true,
-		"skipLibCheck": true,
-		"strict": true,
-		"noEmit": true,
-		"esModuleInterop": true,
-		"module": "esnext",
-		"moduleResolution": "bundler",
-		"resolveJsonModule": true,
-		"isolatedModules": true,
-		"jsx": "react-jsx",
-		"incremental": true,
-		"plugins": [
-			{
-				"name": "next"
-			}
-		],
+		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./*"],
+			"@/*": ["./src/*"],
 			"@bluevoid-test/ui": ["../ui/lib/main.tsx"],
 			"@bluevoid-test/ui/utils": ["../ui/lib/utils.ts"],
 			"@bluevoid-test/ui/hooks": ["../ui/lib/hooks.ts"],
@@ -101,14 +89,5 @@
 				"../ui/lib/components/ui/useColorScheme.tsx"
 			]
 		}
-	},
-	"include": [
-		"next-env.d.ts",
-		"**/*.ts",
-		"**/*.tsx",
-		".next/types/**/*.ts",
-		".next/dev/types/**/*.ts",
-		"**/*.mts"
-	],
-	"exclude": ["node_modules"]
+	}
 }
